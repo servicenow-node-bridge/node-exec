@@ -10,7 +10,7 @@ function processNativeScript(req, res, next) {
         message: status,
         result: result.result
     };
-    //res.send(JSON.stringify(myObj));
+    
     res.send(myObj);
     next();
 }
@@ -59,7 +59,7 @@ function runScriptInVM(scriptPayload, native) {
         };
         vm = new NodeVM(options);
     }
-    //    const script = new VMScript(scriptPayload);
+    
     const script = scriptPayload;
     let result = null;
     let error = false;
@@ -68,7 +68,6 @@ function runScriptInVM(scriptPayload, native) {
         result = vm.run(script, 'vm.js');
     } catch (e) {
         error = true;
-        console.log(e);
         result = e;
     }
 
