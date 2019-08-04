@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "restify": "^8.4.0",
+    "vm2": "^3.8.3"
+  },
+  "scripts": {
+    "start": "node index"
+  }
+}
