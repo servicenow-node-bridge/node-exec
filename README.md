@@ -15,3 +15,7 @@ This is just the base, now you can run Native or NodeJS code sent to this NodeJS
 So if someone would like to use the `faker` package, you would need to cd to `snc-node-bridge` and run `yarn add faker` in the folder and then the sent scripts that are using `faker` will be correctly executed.
 
 If you have any issues or improvements, feel free to open an issue or a pull request.
+
+This project is a Work In Progress, so use it with caution.
+
+For the Servicenow side, see [scoped-app](https://github.com/snc-node-bridge/scoped-app)
