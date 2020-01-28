@@ -17,7 +17,7 @@ function processNativeScript(req, res, next) {
 
 function processNodeScript(req, res, next) {
     let status = "success";
-    let result = runScriptInVM(req.body.script, false);
+    let result = runScriptInVM(req.body.script, false, req.body.log_sys_id, req.body.data);
     if (result.error === true) {
         status = "error";
     }
@@ -25,7 +25,7 @@ function processNodeScript(req, res, next) {
         message: "success",
         result: result.result
     };
-    //res.send(JSON.stringify(myObj));
+
     res.send(myObj);
     next();
 }
@@ -42,7 +42,7 @@ server.listen(8080, function() {
 });
 
 
-function runScriptInVM(scriptPayload, native) {
+function runScriptInVM(scriptPayload, native, logID, data) {
     let vm = null;
     const {
         VM,
@@ -52,23 +52,31 @@ function runScriptInVM(scriptPayload, native) {
     if (native === true) {
         vm = new VM();
     } else {
+        const _getLogID = () => logID;
+        const _getData = () => data;
         let options = {
+            sandbox: {
+                _getLogID,
+                _getData
+            },
             require: {
-                external: true
+                external: true,
+                builtin: ['fs', 'path', 'util'],
+                root: './',
             }
         };
         vm = new NodeVM(options);
     }
     
     const script = scriptPayload;
-    let result = null;
+    let result;
     let error = false;
 
     try {
         result = vm.run(script, 'vm.js');
     } catch (e) {
         error = true;
-        result = e;
+        result = {message: e.toString(), stack: e.stack};
     }
 
     return {
